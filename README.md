@@ -1,0 +1,1 @@
+# EN05177---SISTEMAS-OPERACIONAIS---2025---projeto-de-conclus-o-de-disciplina
