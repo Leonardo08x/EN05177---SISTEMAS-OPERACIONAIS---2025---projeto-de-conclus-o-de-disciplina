@@ -1,4 +1,5 @@
-#include "main-voids.c"
+#include "forca.h"
+
 int main() {
     pthread_t t_word, t_input, t_check;
     char letter; // Variável compartilhada para a letra inserida
@@ -25,3 +26,9 @@ int main() {
     
     return 0;
 }
+
+/*
+ TODO:
+ Verificar palavras erradas repetidas,
+ Adicionar Dicas
+*/
