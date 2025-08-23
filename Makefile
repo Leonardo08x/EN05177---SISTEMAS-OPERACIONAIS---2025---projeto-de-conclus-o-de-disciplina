@@ -1,37 +1,38 @@
-# --- Configuração do Compilador e Flags ---
+# Compilador e flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-IDIR = -Iinclude
-LDFLAGS = -lpthread
+CFLAGS = -Wall -Wextra -Iinclude
 
-# --- Configuração dos Arquivos ---
-# Detecta o Sistema Operacional
-ifeq ($(OS), Windows_NT)
-    TARGET = forca.exe
-    RM = del
-else
-    TARGET = forca
-    RM = rm -f
-endif
+# Pastas
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
 
-# Encontra todos os arquivos .c dentro da pasta src
-SOURCES = $(wildcard src/*.c)
+# Nome do executável
+TARGET = $(BIN_DIR)/programa
 
-# Regra padrão: executada quando você digita apenas "make"
+# Lista de arquivos .c e .o
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+# -----------------------
+# Regras principais
+# -----------------------
 all: $(TARGET)
 
-# Regra para compilar o programa
-$(TARGET): $(SOURCES)
-	$(CC) $(CFLAGS) $(IDIR) $^ -o $@ $(LDFLAGS)
-	@echo "Projeto compilado com sucesso: $(TARGET)"
+# Compila o executável a partir dos objetos
+$(TARGET): $(OBJS) | $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Regra para compilar E executar o projeto
-run: all
-	...
+# Compila cada arquivo .c em .o
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regra para limpar os arquivos compilados
+# Cria pastas se não existirem
+$(BIN_DIR) $(OBJ_DIR):
+	mkdir -p $@
+
+# Limpeza
 clean:
-	...
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-# Declara regras que não geram arquivos
-.PHONY: all run clean
+.PHONY: all clean
